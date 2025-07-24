@@ -1,12 +1,12 @@
 package com.salem.androidtesting.ramadan.coroutines.use_case
 
-import com.salem.androidtesting.ramadan_test.UseCase.Friend
-import com.salem.androidtesting.ramadan_test.UseCase.GetUserProfileUseCase
-import com.salem.androidtesting.ramadan_test.UseCase.Profile
-import com.salem.androidtesting.ramadan_test.UseCase.UserRepository
-import com.salem.androidtesting.ramadan_test.UseCase.UserRepositoryImpl
-import com.salem.androidtesting.ramadan_test.UseCase.UserRepositoryImplV2WorkParallel
-import com.salem.androidtesting.ramadan_test.UseCase.UserRepositoryImplV2WorkSequential
+import com.salem.androidtesting.ramadan_test.coroutines.UseCase.Friend
+import com.salem.androidtesting.ramadan_test.coroutines.UseCase.GetUserProfileUseCase
+import com.salem.androidtesting.ramadan_test.coroutines.UseCase.Profile
+import com.salem.androidtesting.ramadan_test.coroutines.UseCase.UserRepository
+import com.salem.androidtesting.ramadan_test.coroutines.UseCase.UserRepositoryImpl
+import com.salem.androidtesting.ramadan_test.coroutines.UseCase.UserRepositoryImplV2WorkParallel
+import com.salem.androidtesting.ramadan_test.coroutines.UseCase.UserRepositoryImplV2WorkSequential
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.CoroutineDispatcher

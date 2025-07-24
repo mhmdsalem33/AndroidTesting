@@ -1,4 +1,4 @@
-package com.salem.androidtesting.ramadan_test.UseCase
+package com.salem.androidtesting.ramadan_test.coroutines.UseCase
 
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
