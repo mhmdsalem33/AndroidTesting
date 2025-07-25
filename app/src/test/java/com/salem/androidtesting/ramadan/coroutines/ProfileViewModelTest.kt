@@ -24,7 +24,6 @@ import kotlin.test.assertEquals
 @OptIn(ExperimentalCoroutinesApi::class)
 class ProfileViewModelTest {
 
-
     @get:Rule
     val mainDispatcherRule =  MainDispatcherRule()
 
@@ -60,11 +59,9 @@ class ProfileViewModelTest {
         advanceUntilIdle()
 
         assertEquals(ProfileUIState.Error("Error"), viewModel.profileUiState.value)
-
     }
 
 }
-
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class MainDispatcherRule( val testDispatcherRule : TestDispatcher = StandardTestDispatcher()) : TestWatcher(){
@@ -77,5 +74,4 @@ class MainDispatcherRule( val testDispatcherRule : TestDispatcher = StandardTest
         super.finished(description)
         Dispatchers.resetMain()
     }
-
 }
