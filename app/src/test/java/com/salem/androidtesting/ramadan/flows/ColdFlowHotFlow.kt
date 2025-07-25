@@ -2,12 +2,14 @@ package com.salem.androidtesting.ramadan.flows
 
 import app.cash.turbine.test
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
+import org.amshove.kluent.shouldBe
 import org.junit.Test
 import org.amshove.kluent.shouldBeEqualTo
 import kotlin.test.assertEquals
@@ -34,4 +36,24 @@ class ColdFlow {
 
         flow.test { awaitItem() shouldBeEqualTo 30 }
     }
+
+
+    @Test
+    fun `test state flow`() = runTest{
+        val flow = MutableStateFlow<UIState>(UIState.Loading)
+
+        flow.test {
+            awaitItem() shouldBe UIState.Loading
+            flow.tryEmit(UIState.Success)
+            awaitItem() shouldBe UIState.Success
+        }
+
+
+    }
+
+}
+
+sealed class UIState{
+    data object Loading : UIState()
+    data object Success : UIState()
 }
