@@ -43,10 +43,7 @@ class FlowPlaygroundWithTurbineTest {
             assertEquals( 3 , awaitItem())
             awaitComplete()
         }
-
     }
-
-
 
     @Test
     fun `test flow consumer with exception`() = runTest {
@@ -59,6 +56,7 @@ class FlowPlaygroundWithTurbineTest {
             assertEquals("unExpected error" , awaitError().message)
         }
     }
+
 
 
 

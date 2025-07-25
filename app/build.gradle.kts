@@ -95,6 +95,8 @@ dependencies {
     testImplementation("app.cash.turbine:turbine:1.2.1")
 
 
+    testImplementation ("org.amshove.kluent:kluent-android:1.72")
+
 }
 
 
