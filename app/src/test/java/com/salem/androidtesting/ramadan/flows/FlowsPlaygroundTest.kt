@@ -12,7 +12,7 @@ import org.junit.Test
 import kotlin.test.assertEquals
 
 @OptIn(ExperimentalCoroutinesApi::class)
-class FlowsBackgroundTest {
+class FlowsPlaygroundTest {
 
     // testing flows types :
     //  1- testing flow itself

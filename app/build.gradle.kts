@@ -92,6 +92,7 @@ dependencies {
     androidTestImplementation ("androidx.arch.core:core-testing:2.2.0")
     androidTestImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
     testImplementation(kotlin("test"))
+    testImplementation("app.cash.turbine:turbine:1.2.1")
 
 
 }
