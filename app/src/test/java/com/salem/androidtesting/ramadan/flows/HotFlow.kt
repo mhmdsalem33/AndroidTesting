@@ -1,8 +1,13 @@
 package com.salem.androidtesting.ramadan.flows
 
 import app.cash.turbine.test
+import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.flow.shareIn
 import kotlinx.coroutines.test.runTest
 import org.amshove.kluent.shouldBe
 import org.amshove.kluent.shouldBeEqualTo
@@ -28,6 +33,38 @@ class HotFlow {
         flow.test {
             awaitItem() shouldBeEqualTo 1
         }
+    }
+
+
+    @Test
+    fun `test shared flow with SharingStarted WhileSubscribed`() = runTest {
+
+        val flow = flowOf(
+            "Event 1",
+            "Event 2",
+            "Event 3"
+        )
+
+        val sharedFlow = flow
+            .onCompletion {
+                println("Shared flow completed")
+            }.shareIn(
+                this,
+                SharingStarted.WhileSubscribed() ,
+                1
+            )
+
+        // SharingStarted.WhileSubscribed()
+        // ✅ Start collecting data only when someone is listening to the flow
+        // ⏸️ Stop collecting when no one is listening anymore.
+
+        sharedFlow.test {
+            awaitItem() shouldBeEqualTo "Event 1"
+            awaitItem() shouldBeEqualTo "Event 2"
+            awaitItem() shouldBeEqualTo "Event 3"
+        }
+
+        coroutineContext.cancelChildren()
     }
 
 }
