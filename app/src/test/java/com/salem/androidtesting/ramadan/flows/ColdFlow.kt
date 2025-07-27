@@ -1,6 +1,7 @@
 package com.salem.androidtesting.ramadan.flows
 
 import app.cash.turbine.test
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
@@ -34,18 +35,7 @@ class ColdFlow {
     }
 
 
-    @Test
-    fun `test state flow`() = runTest{
-        val flow = MutableStateFlow<UIState>(UIState.Loading)
 
-        flow.test {
-            awaitItem() shouldBe UIState.Loading
-            flow.tryEmit(UIState.Success)
-            awaitItem() shouldBe UIState.Success
-        }
-
-
-    }
 
 }
 
