@@ -63,8 +63,38 @@ class HotFlow {
             awaitItem() shouldBeEqualTo "Event 2"
             awaitItem() shouldBeEqualTo "Event 3"
         }
-
         coroutineContext.cancelChildren()
     }
+
+    @Test
+    fun `test shared flow with SharingStarted Lazily`() = runTest {
+
+        val flow = flowOf(
+            "Event 1",
+            "Event 2",
+            "Event 3"
+        )
+
+        val sharedFlow = flow
+            .onCompletion {
+                println("Shared flow completed")
+            }.shareIn(
+                scope   =  this,
+                started = SharingStarted.Lazily ,
+                replay  = 1
+            )
+
+        // SharingStarted.Lazily
+        // ✅ The flow starts when the first listener appears.
+        // ❌ It does not stop when no one is listening.
+
+        sharedFlow.test {
+            awaitItem() shouldBeEqualTo "Event 1"
+            awaitItem() shouldBeEqualTo "Event 2"
+            awaitItem() shouldBeEqualTo "Event 3"
+        }
+        coroutineContext.cancelChildren()
+    }
+
 
 }
