@@ -3,7 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     id("com.google.devtools.ksp")
     alias(libs.plugins.hiltAndroid)
-
+    id("com.google.gms.google-services")
 
 }
 
@@ -15,11 +15,24 @@ android {
         applicationId = "com.salem.androidtesting"
         minSdk = 24
         targetSdk = 35
-        versionCode = 1
+        versionCode = 2
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
+
+
+    signingConfigs {
+        create("release") {
+            if (project.hasProperty("MYAPP_UPLOAD_STORE_FILE")) {
+                storeFile = file(project.property("MYAPP_UPLOAD_STORE_FILE") as String)
+                storePassword = project.property("MYAPP_UPLOAD_STORE_PASSWORD") as String
+                keyAlias = project.property("MYAPP_UPLOAD_KEY_ALIAS") as String
+                keyPassword = project.property("MYAPP_UPLOAD_KEY_PASSWORD") as String
+            }
+        }
+    }
+
 
     buildTypes {
         release {
@@ -28,6 +41,9 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+        }
+        getByName("release") {
+            signingConfig = signingConfigs.getByName("release")
         }
     }
     compileOptions {
@@ -54,7 +70,6 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
 
 
-    val mockkVersion = "1.14.5"
     testImplementation (libs.mockk.android)
     testImplementation (libs.mockk.agent)
 
@@ -62,7 +77,6 @@ dependencies {
     androidTestImplementation (libs.truth)
 
 
-    val roomVersion = "2.6.1"
     implementation(libs.androidx.room.runtime)
     ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
@@ -82,7 +96,6 @@ dependencies {
     implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1")
 
 
-
     // view model
     implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7")
     implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.8.7")
@@ -96,6 +109,10 @@ dependencies {
 
 
     testImplementation ("org.amshove.kluent:kluent-android:1.72")
+
+
+    implementation(platform("com.google.firebase:firebase-bom:34.0.0"))
+    implementation("com.google.firebase:firebase-analytics")
 
 }
 
