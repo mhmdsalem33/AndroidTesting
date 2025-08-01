@@ -8,8 +8,33 @@ jobs:
     docker:
       - image: cimg/android:2023.09
     steps:
-      - run: echo "I'm job named build try - Build job with in  a workflow named build"
+      - checkout
 
+      - run:
+          name: Decode google-services.json
+          command: echo $GOOGLE_SERVICES_JSON | base64 --decode > app/google-services.json
+
+      - run:
+          name: Decode Keystore
+          command: echo $KEYSTORE_B64 | base64 --decode > app/android_test_keystore.jks
+
+      - run:
+          name: Setup Ruby & Fastlane
+          command: |
+            sudo apt-get update
+            sudo apt-get install -y ruby-full build-essential libffi-dev
+            gem install bundler --user-install
+            export GEM_HOME="$HOME/.gem"
+            export PATH="$HOME/.gem/bin:$PATH"
+            bundle config set --local path 'vendor/bundle'
+            bundle install
+
+      - run:
+          name: Run Fastlane lane (beta_android)
+          command: |
+            export GEM_HOME="$HOME/.gem"
+            export PATH="$HOME/.gem/bin:$PATH"
+            bundle exec fastlane beta_android
 
 workflows:
   build-workflow:
