@@ -35,6 +35,13 @@ jobs:
             export GEM_HOME="$HOME/.gem"
             export PATH="$HOME/.gem/bin:$PATH"
             bundle exec fastlane beta_android
+            
+      - run:
+          name: Run Fastlane Unit Tests (run_release_tests)
+          command: |
+            export GEM_HOME="$HOME/.gem"
+            export PATH="$HOME/.gem/bin:$PATH"
+            bundle exec fastlane run_release_tests
 
 workflows:
   build-workflow:
