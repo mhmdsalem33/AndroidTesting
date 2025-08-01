@@ -43,6 +43,12 @@ jobs:
             export PATH="$HOME/.gem/bin:$PATH"
             bundle exec fastlane run_release_tests
 
+      - run:
+          name: Fastlane Build with Increment
+          command: bundle exec fastlane build_release_with_increment_build_number
+
+
+
 workflows:
   build-workflow:
     jobs:

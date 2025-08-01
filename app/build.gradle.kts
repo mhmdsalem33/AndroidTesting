@@ -1,3 +1,7 @@
+import java.io.FileInputStream
+import java.io.FileOutputStream
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -7,6 +11,36 @@ plugins {
 
 }
 
+val versionPropsFile = rootProject.file("version.properties")
+val versionProps = Properties()
+versionProps.load(FileInputStream(versionPropsFile))
+
+
+
+
+tasks.register("incrementVersion") {
+    doLast {
+        val propsFile = file("version.properties")
+        val props = Properties().apply {
+            load(FileInputStream(propsFile))
+        }
+
+        val currentCode = props["VERSION_CODE"].toString().toInt()
+        val currentName = props["VERSION_NAME"].toString()
+        val newCode = currentCode + 1
+        val nameParts = currentName.split(".").toMutableList()
+        nameParts[nameParts.size - 1] = (nameParts.last().toInt() + 1).toString()
+        val newName = nameParts.joinToString(".")
+
+        props["VERSION_CODE"] = newCode.toString()
+        props["VERSION_NAME"] = newName
+
+        props.store(FileOutputStream(propsFile), null)
+        println("Updated VERSION_CODE=$newCode and VERSION_NAME=$newName")
+    }
+}
+
+
 android {
     namespace = "com.salem.androidtesting"
     compileSdk = 35
@@ -15,8 +49,8 @@ android {
         applicationId = "com.salem.androidtesting"
         minSdk = 24
         targetSdk = 35
-        versionCode = 3
-        versionName = "1.0"
+        versionCode = versionProps["VERSION_CODE"].toString().toInt()
+        versionName = versionProps["VERSION_NAME"].toString()
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
