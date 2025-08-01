@@ -13,3 +13,9 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+
+
+**/google-services.json
+**/android_testing_keystore
+.env

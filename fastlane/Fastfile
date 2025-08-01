@@ -1,0 +1,78 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:android)
+
+platform :android do
+  desc "Run Fastlane Success"
+  lane :test do
+    print("Fastlane works only")
+  end
+
+
+  desc "Prepare Android Debug Build"
+  lane :build_debug_android do
+      gradle(
+      task: "assembleDebug"
+      )
+      end
+
+
+  desc "Prepare Android Release Build"
+  lane :build_release_build do
+      gradle(
+        task: "assembleRelease"
+      )
+      end
+
+
+
+  desc "Run unit tests for android"
+  lane :run_tests do
+      gradle(
+      task:"testDebugUnitTest",
+      print_command: true,
+      flags: "--stacktrace"
+      )
+  end
+
+    desc "Run release unit tests for android"
+    lane :run_release_tests do
+        gradle(
+        task:"testReleaseUnitTest",
+        print_command: true,
+        flags: "--stacktrace"
+        )
+    end
+
+
+  desc "Run All CI TASKS"
+  lane :run_all_tasks do
+      run_tests
+      build_debug_android
+      build_release_android
+      end
+
+  desc "Prepare Android Build & Distribute to firebase app distribution"
+  lane :beta_android do
+      build_release_build
+      firebase_app_distribution(
+      app: ENV["FIREBASE_APP_ID"],
+      firebase_cli_token: ENV["FIREBASE_TOKEN"],
+      groups: "squad-android"
+      )
+  end
+
+end

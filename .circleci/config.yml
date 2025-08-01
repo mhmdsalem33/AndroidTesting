@@ -1,35 +1,17 @@
 version: 2.1
 
+orbs:
+  android: circleci/android@2.3.0
+
 jobs:
   build:
     docker:
-      - image: cimg/android:2023.11.1
+      - image: cimg/android:2023.09
     steps:
-      - checkout
+      - run: echo "I'm job named build try - Build job with in  a workflow named build"
 
-      - run:
-          name: Prepare Environment
-          command: ./prepare.sh
-
-      - run:
-          name: Build APK
-          command: ./gradlew assembleRelease
-
-  deploy:
-    docker:
-      - image: cimg/android:2023.11.1
-    steps:
-      - checkout
-
-      - run:
-          name: Deploy Release
-          command: ./deploy.sh
 
 workflows:
-  version: 2
-  build-and-deploy:
+  build-workflow:
     jobs:
       - build
-      - deploy:
-          requires:
-            - build
