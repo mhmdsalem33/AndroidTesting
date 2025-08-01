@@ -16,7 +16,7 @@ jobs:
 
       - run:
           name: Decode Keystore
-          command: echo $KEYSTORE_B64 | base64 --decode > app/android_test_keystore.jks
+          command: echo $KEYSTORE_B64 | base64 --decode > app/android_test_keystore
 
       - run:
           name: Setup Ruby & Fastlane
