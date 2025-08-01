@@ -18,4 +18,5 @@ local.properties
 
 **/google-services.json
 **/android_testing_keystore
+**/keystore_encoded.txt
 .env
