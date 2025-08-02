@@ -1,5 +1,4 @@
 import java.io.FileInputStream
-import java.io.FileOutputStream
 import java.util.Properties
 
 plugins {
@@ -11,35 +10,32 @@ plugins {
 
 }
 
-val versionPropsFile = rootProject.file("version.properties")
-val versionProps = Properties()
-versionProps.load(FileInputStream(versionPropsFile))
-
-
 
 
 tasks.register("incrementVersion") {
     doLast {
-        val propsFile = file("version.properties")
-        val props = Properties().apply {
-            load(FileInputStream(propsFile))
-        }
+        val versionFile = file("version.properties")
+        val props = Properties()
+        props.load(versionFile.inputStream())
 
-        val currentCode = props["VERSION_CODE"].toString().toInt()
-        val currentName = props["VERSION_NAME"].toString()
-        val newCode = currentCode + 1
-        val nameParts = currentName.split(".").toMutableList()
-        nameParts[nameParts.size - 1] = (nameParts.last().toInt() + 1).toString()
-        val newName = nameParts.joinToString(".")
+        val versionCode = props["VERSION_CODE"].toString().toInt() + 1
+        val versionName = "1.0.$versionCode"
 
-        props["VERSION_CODE"] = newCode.toString()
-        props["VERSION_NAME"] = newName
+        props["VERSION_CODE"] = versionCode.toString()
+        props["VERSION_NAME"] = versionName
 
-        props.store(FileOutputStream(propsFile), null)
-        println("Updated VERSION_CODE=$newCode and VERSION_NAME=$newName")
+        props.store(versionFile.outputStream(), null)
+        println("✅ Updated VERSION_CODE to $versionCode and VERSION_NAME to $versionName")
     }
 }
 
+val versionPropsFile = rootProject.file("app/version.properties")
+val versionProps = Properties().apply {
+    load(FileInputStream(versionPropsFile))
+}
+
+val versionCodeNumber = versionProps["VERSION_CODE"].toString().toInt()
+val versionNameNumber = versionProps["VERSION_NAME"].toString()
 
 android {
     namespace = "com.salem.androidtesting"
@@ -49,8 +45,8 @@ android {
         applicationId = "com.salem.androidtesting"
         minSdk = 24
         targetSdk = 35
-        versionCode = versionProps["VERSION_CODE"].toString().toInt()
-        versionName = versionProps["VERSION_NAME"].toString()
+        versionCode = versionCodeNumber
+        versionName = versionNameNumber
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -104,19 +100,19 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
 
 
-    testImplementation (libs.mockk.android)
-    testImplementation (libs.mockk.agent)
+    testImplementation(libs.mockk.android)
+    testImplementation(libs.mockk.agent)
 
-    testImplementation (libs.truth)
-    androidTestImplementation (libs.truth)
+    testImplementation(libs.truth)
+    androidTestImplementation(libs.truth)
 
 
     implementation(libs.androidx.room.runtime)
     ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
     implementation(libs.androidx.room.paging)
-    testImplementation (libs.androidx.room.testing)
-    testImplementation (libs.kotlinx.coroutines.test)
+    testImplementation(libs.androidx.room.testing)
+    testImplementation(libs.kotlinx.coroutines.test)
 
 
     // Dagger Hilt
@@ -126,23 +122,23 @@ dependencies {
 
 
     //Coroutines
-    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
-    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1")
 
 
     // view model
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7")
-    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.8.7")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.7")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.7")
 
 
-    testImplementation ("androidx.arch.core:core-testing:2.2.0")
-    androidTestImplementation ("androidx.arch.core:core-testing:2.2.0")
-    androidTestImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
+    testImplementation("androidx.arch.core:core-testing:2.2.0")
+    androidTestImplementation("androidx.arch.core:core-testing:2.2.0")
+    androidTestImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
     testImplementation(kotlin("test"))
     testImplementation("app.cash.turbine:turbine:1.2.1")
 
 
-    testImplementation ("org.amshove.kluent:kluent-android:1.72")
+    testImplementation("org.amshove.kluent:kluent-android:1.72")
 
 
     implementation(platform("com.google.firebase:firebase-bom:34.0.0"))
